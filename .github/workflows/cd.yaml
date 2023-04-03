@@ -38,8 +38,4 @@ jobs:
 
       - name: Deploy new docker
         run: |
-        gcloud run deploy $SERVICE_NAME \
-         --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME \
-         --region europe-west3 \
-         --port 80 \
-         --memory 4Gi
+        gcloud run deploy $SERVICE_NAME --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME --region europe-west3 --port 80 --memory 4Gi
