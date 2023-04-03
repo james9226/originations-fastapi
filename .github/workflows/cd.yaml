@@ -36,6 +36,6 @@ jobs:
       - name: Push docker image to GCR
         run: docker push europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME
 
-      - name: Deploy new docker
+      - name: Deploy new docker image to prod
         run: |
         gcloud run deploy $SERVICE_NAME --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME --region europe-west3 --port 80 --memory 4Gi
