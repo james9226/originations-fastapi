@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Setup Google Cloud
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           service_account_key: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
           project_id: ${{ secrets.PROJECT_ID }}
@@ -30,7 +30,7 @@ jobs:
         run: docker tag $IMAGE_NAME europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME
 
       - name: Configure gcloud auth for docker
-      - run: |
+        run: |
           gcloud auth configure-docker -q
 
       - name: Push docker image to GCR
@@ -38,4 +38,4 @@ jobs:
 
       - name: Deploy new docker image to prod
         run: |
-        gcloud run deploy $SERVICE_NAME --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME --region europe-west3 --port 80 --memory 4Gi
+          gcloud run deploy $SERVICE_NAME --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME --region europe-west3 --port 80 --memory 4Gi
