@@ -31,12 +31,9 @@ jobs:
       - name: Tag docker image
         run: docker tag $IMAGE_NAME europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME
 
-      - name: Login
-        run: gcloud auth login
-
-      - name: Configure gcloud auth for docker
+      - name: Configure GCloud Auth provider with Docker
         run: |
-          gcloud auth configure-docker -q
+              gcloud auth configure-docker europe-west3-docker.pkg.dev
 
       - name: Push docker image to GCR
         run: docker push europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME
