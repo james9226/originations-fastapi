@@ -21,7 +21,7 @@ class PolicyRule:
             f"originations.domain.policy.rules.{rule_name}"
         )
 
-    async def run_policy_rule(self, reference_id, **kwargs) -> PolicyOutcome:
+    async def run_policy_rule(self, reference_id, **kwargs) -> dict:
         try:
             result, reason = await self.module.rule(**kwargs)
         except:

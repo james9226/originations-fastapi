@@ -35,3 +35,4 @@ module = [
     "google.cloud",
     "google.cloud.firestore",
 ]
+ignore_missing_imports = true
