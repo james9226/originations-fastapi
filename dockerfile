@@ -2,6 +2,8 @@ FROM python:3.9-slim
 
 ENV POETRY_VERSION = 1.2.1
 
+RUN pip install --upgrade pip
+
 RUN pipx install "poetry==$POETRY_VERSION"
 
 WORKDIR /code
