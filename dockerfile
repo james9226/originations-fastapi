@@ -10,7 +10,7 @@ COPY ./poetry.lock ./pyproject.toml /code/
 
 RUN poetry config virtualenvs.create false
 
-RUN poetry install --no-interaction
+RUN poetry install --no-interaction --no-root
 
 ADD ./originations originations
 
