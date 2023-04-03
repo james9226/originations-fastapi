@@ -1,5 +1,10 @@
 # Originations FastAPI Demo Project
 
+![CI](https://github.com/james9226/originations-fastapi/actions/workflows/ci.yaml/badge.svg
+) ![CD](https://github.com/james9226/originations-fastapi/actions/workflows/cd.yaml/badge.svg
+)
+
+
 This is a FastAPI project, containerized with docker and hosted on GCP cloud run
 
 It uses GitHub actions for a simple CI/CD flow, and uses google secrets manager. 
