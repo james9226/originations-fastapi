@@ -34,5 +34,6 @@ module = [
     "google.oauth2",
     "google.cloud",
     "google.cloud.firestore",
+    "dotenv",
 ]
 ignore_missing_imports = true
