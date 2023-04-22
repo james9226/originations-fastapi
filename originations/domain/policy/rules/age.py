@@ -20,9 +20,9 @@ from originations.domain.policy.policy_rule import NewPolicyRule
 class AgeRule(NewPolicyRule):
     MIN_AGE = 18
 
-    def __init__(self, request: ApplicationRequest):
+    def __init__(self, *request: ApplicationRequest):
         self.request = request
-        self.rule_name = "AgeRule"
+        self.rule_name = "Minimum Age"
         self.rule_description = "Check customer is at least 18 years old"
 
     def run_policy(self) -> None:

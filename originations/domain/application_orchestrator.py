@@ -1,8 +1,8 @@
-import logging
 import asyncio
 from originations.domain.credit_variables.credit_variable_calculator import (
     calculate_credit_variables,
 )
+from originations.middleware.context import get_request_datetime, get_request_id
 from originations.models.request import ApplicationRequestInput
 from originations.models.application import ApplicationRequest
 from originations.services.bureau.equifax.load_file import mock_equifax_request
@@ -43,11 +43,14 @@ async def application_orchestrator(raw_request: ApplicationRequestInput):
 
 
     """
-    logger = logging.getLogger("api-logger")
-
     hash = hash_application(raw_request)
 
-    request = ApplicationRequest(applicant_hash=hash, **raw_request.dict())
+    request = ApplicationRequest(
+        application_id=get_request_id(),
+        event_time=get_request_datetime(),
+        applicant_hash=hash,
+        **raw_request.dict()
+    )
 
     prevetting_policy_outcome, _ = await asyncio.gather(
         run_policy_rules(CONFIG, request.application_id, request=request),

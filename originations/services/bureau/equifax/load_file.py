@@ -4,9 +4,7 @@ from datetime import datetime, timedelta
 from originations.services.bureau.equifax.mock_endpoint import create_mock_bureau_file
 from originations.services.firestore.firestore import load_firestore
 import asyncio
-import logging
-
-logger = logging.getLogger("api-logger")
+from originations.services.logging import log_handler
 
 
 async def load_existing_credit_file(applicant_hash: str) -> list:
@@ -17,9 +15,9 @@ async def load_existing_credit_file(applicant_hash: str) -> list:
         .document(applicant_hash)
         .collection("equifax")
     )
-    query = collection.where("expirey_timestamp", ">=", str(datetime.now()))
+    # query = collection.where("expirey_timestamp", ">=", str(datetime.now()))
 
-    docs = await query.get()
+    docs = await collection.get()
 
     return docs
 
@@ -45,16 +43,17 @@ async def save_new_credit_file(applicant_hash: str, credit_file) -> None:
 async def mock_equifax_request(request: ApplicationRequest):
     # if no valid cached file, external request to get new one
 
+    log_handler.info(f"Searching for existing credit file!")
     res = await load_existing_credit_file(request.applicant_hash)
 
     if len(res) == 1:
-        logger.info(f"Found existing credit file for request {get_request_id()}")
+        log_handler.info(f"Found existing credit file!")
         return res[0].to_dict()["credit_file"]
     if len(res) > 1:
-        logger.error("Found duplicate files")
+        log_handler.error("Found duplicate files")
         raise ValueError("Duplicate Valid Credit Files For Applicant!")
 
-    logger.info(f"Creting new credit file for request {get_request_id()}")
+    log_handler.info(f"Creting new credit file for request {get_request_id()}")
 
     # Fake External Request
     credit_file = await create_mock_bureau_file()

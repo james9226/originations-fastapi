@@ -1,13 +1,13 @@
 from datetime import datetime
 import uuid
 from originations.enums.policy import PolicyRuleResult, PolicyOutcome
-import logging
 import importlib
 from abc import ABC, abstractmethod
 from originations.services.firestore.io import post_event
 from originations.models.application import ApplicationRequest
 from originations.models.credit_variables import CreditVariables
 from originations.models.submission_request import SubmissionRequest
+from originations.services.logging import log_handler
 
 
 class PolicyRule:
@@ -20,7 +20,6 @@ class PolicyRule:
         self.rule_name = rule_name
         self.triggered_outcome = triggered_outcome
         self.errored_outcome = errored_outcome
-        self.logger = logging.getLogger("api-logger")
         self.module = importlib.import_module(
             f"originations.domain.policy.rules.{rule_name}"
         )
@@ -34,7 +33,7 @@ class PolicyRule:
                 f"Unhandled error trying to run policy rule {self.rule_name}",
             )
 
-        self.logger.info({"rule": self.rule_name, "result:": result, "reason": reason})
+        log_handler.info(f"rule={self.rule_name}, result={result}, reason={reason}")
         if result == PolicyRuleResult.TRIGGERED:
             outcome = self.triggered_outcome
         elif result == PolicyRuleResult.ERRORED:
@@ -79,7 +78,6 @@ class PolicyRuleRunner:
         self.policy_rule: NewPolicyRule = policy(**kwargs)
         self.triggered_outcome = triggered_outcome
         self.errored_outcome = errored_outcome
-        self.logger = logging.getLogger("api-logger")
 
     async def run_policy_rule(self):
         self.policy_rule.run_policy()
