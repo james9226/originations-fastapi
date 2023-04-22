@@ -6,6 +6,12 @@ from fastapi.responses import JSONResponse
 def application_result(
     outcome: PolicyOutcome, acceptable_quotes: list = []
 ) -> JSONResponse:
+    """
+    Returns the result of an application.
+
+    Note that this function should NOT be used for submissions - a seperate endpoint is necessary.
+
+    """
     if outcome in [
         PolicyOutcome.DECLINED,
         PolicyOutcome.DECLINED_DUE_TO_TECHNCAL_ERROR,
@@ -18,6 +24,7 @@ def application_result(
     ]:
         body = {"Outcome": "Application Declined", "Acceptable Quotes": []}
     elif outcome == PolicyOutcome.PASSED:
+        # TODO - raise error for an approved application with no acceptable quotes
         body = {
             "Outcome": "Application Approved",
             "Acceptable Quotes": acceptable_quotes,

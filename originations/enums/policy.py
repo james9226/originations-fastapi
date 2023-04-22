@@ -14,3 +14,10 @@ class PolicyOutcome(str, Enum):
     DECLINED_WITH_REAPPLICATION_ALLOWED = "declined_with_reapplication_allowed"
     DECLINED_DUE_TO_TECHNCAL_ERROR = "declined_due_to_technical_error"
     REFERRED_DUE_TO_TECHNICAL_ERROR = "referred_due_to_technical_error"
+
+
+class PolicyPhase(str, Enum):
+    PREVETTING = "prevetting"
+    APPLICATION = "application"
+    QUOTATION = "quotation"
+    SUBMISSION = "submission"
