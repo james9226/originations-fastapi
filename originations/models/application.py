@@ -2,6 +2,7 @@ from pydantic import BaseModel, ValidationError, validator, EmailStr, Field
 import uuid
 from datetime import date, datetime
 from originations.enums.enums import EmploymentStatus, ResidentialStatus, MaritalStatus
+from originations.middleware.context import get_request_id
 
 # import regex as re
 
@@ -16,7 +17,7 @@ class Address(BaseModel):
 
 
 class ApplicationRequest(BaseModel):
-    application_id: uuid.UUID = Field(default_factory=uuid.uuid4)
+    application_id: uuid.UUID = Field(default_factory=get_request_id())
     event_time: datetime = Field(default_factory=datetime.now)
     applicant_hash: str
     first_name: str

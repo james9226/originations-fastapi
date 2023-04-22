@@ -1,7 +1,8 @@
-from originations.domain.policy.policy_rule import PolicyRule
+from originations.domain.policy.policy_rule import PolicyRuleRunner, PolicyRule
 from originations.enums.policy import PolicyOutcome
+from originations.domain.policy.rules.age import AgeRule
 
-PREVETTING_CONFIG = [
+CONFIG = [
     PolicyRule(
         "age",
         PolicyOutcome.DECLINED,
@@ -17,4 +18,10 @@ PREVETTING_CONFIG = [
         PolicyOutcome.DECLINED,
         PolicyOutcome.DECLINED_DUE_TO_TECHNCAL_ERROR,
     ),
+]
+
+PREVETTING_CONFIG = [
+    PolicyRuleRunner(
+        AgeRule, PolicyOutcome.DECLINED, PolicyOutcome.DECLINED_DUE_TO_TECHNCAL_ERROR
+    )
 ]

@@ -30,24 +30,6 @@ logger = logging.getLogger("api-logger")
 
 app.add_middleware(RequestContextMiddleware)
 
-
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    idem = get_request_id()
-    logger.info(f"rid={idem} start request path={request.url.path}")
-    start_time = time.time()
-
-    response = await call_next(request)
-
-    process_time = (time.time() - start_time) * 1000
-    formatted_process_time = "{0:.2f}".format(process_time)
-    logger.info(
-        f"rid={idem} completed_in={formatted_process_time}ms status_code={response.status_code}"
-    )
-
-    return response
-
-
 ## Initial Basic Auth
 security = HTTPBasic()
 
@@ -65,18 +47,6 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
-
-
-## For actual API => to aviod Authentication header from GCP's bearer token
-def weak_authentication(credentials: dict):
-    weak_key = credentials.get("weak_authen", "")
-    if weak_key != "temporary_work":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-    return "authen_ok"
 
 
 @app.exception_handler(RequestValidationError)
