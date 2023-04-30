@@ -10,7 +10,7 @@ logger = logging.getLogger("api-logger")
 REQUEST_ID_CTX_KEY = "request_id"
 REQUEST_DATETIME_CTX_KEY = "request_datetime"
 
-_request_id_ctx_key: ContextVar[Optional[str]] = ContextVar(
+_request_id_ctx_key: ContextVar[Optional[UUID]] = ContextVar(
     REQUEST_ID_CTX_KEY, default=None
 )
 
@@ -23,7 +23,7 @@ def get_request_id() -> Optional[UUID]:
     return _request_id_ctx_key.get()
 
 
-def get_request_datetime() -> Optional[str]:
+def get_request_datetime() -> Optional[datetime]:
     return _request_datetime_ctx_key.get()
 
 
@@ -40,7 +40,7 @@ class RequestContextMiddleware(BaseHTTPMiddleware):
 
         response = await call_next(request)
 
-        process_time = (datetime.now() - get_request_datetime()) * 1000
+        process_time = (datetime.now() - get_request_datetime()) * 1000  # type: ignore[operator]
 
         # formatted_process_time = "{0:.2f}".format(str(process_time))
 

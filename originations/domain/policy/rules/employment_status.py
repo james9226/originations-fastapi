@@ -1,25 +1,30 @@
-from typing import Tuple
-from originations.models.application import ApplicationRequest
-from originations.enums.policy import PolicyRuleResult
+from datetime import date
+from originations.domain.policy.models.policy_rule import PolicyRule
 from originations.enums.enums import EmploymentStatus
+from originations.enums.policy import PolicyRuleResult
+from originations.models.application import ApplicationRequest
 
 
-async def rule(request: ApplicationRequest) -> Tuple[PolicyRuleResult, str]:
-    acceptable_employment_statuses = [
-        EmploymentStatus.FULL_TIME,
-        EmploymentStatus.PART_TIME,
-        EmploymentStatus.RETIRED,
-        EmploymentStatus.SELF_EMPLOYED,
-    ]
+class EmploymentStatusRule(PolicyRule):
+    rule_name = "EmploymentStatusRule"
 
-    employment_status = request.employment_status
+    def rule(self, application_request: ApplicationRequest):
+        acceptable_employment_statuses = [
+            EmploymentStatus.FULL_TIME,
+            EmploymentStatus.PART_TIME,
+            EmploymentStatus.RETIRED,
+            EmploymentStatus.SELF_EMPLOYED,
+        ]
 
-    if employment_status in acceptable_employment_statuses:
-        return (
+        employment_status = application_request.employment_status
+
+        if employment_status not in acceptable_employment_statuses:
+            return self.result(
+                PolicyRuleResult.TRIGGERED,
+                f"Unnaceptable employment status of {employment_status}",
+            )
+
+        return self.result(
             PolicyRuleResult.NOT_TRIGGERED,
             f"Acceptable employment status of {employment_status}",
         )
-    return (
-        PolicyRuleResult.TRIGGERED,
-        f"Unnaceptable employment status of {employment_status}",
-    )
