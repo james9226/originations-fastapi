@@ -14,7 +14,7 @@ base_input_data = {
             "address_line_two": "string",
             "county": "string",
             "city": "string",
-            "postcode": "string",
+            "postcode": "SE1 2TP",
             "move_in_date": "2023-04-01",
         }
     ],

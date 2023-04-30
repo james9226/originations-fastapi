@@ -3,7 +3,7 @@ import uuid
 from datetime import date, datetime
 from originations.enums.enums import EmploymentStatus, ResidentialStatus, MaritalStatus
 
-# import regex as re
+import regex as re
 
 
 class AddressInput(BaseModel):
@@ -19,6 +19,12 @@ class AddressInput(BaseModel):
         if v > date.today():
             raise ValueError(f"Move in date of {v} cannot be in the future!")
         return v
+
+    # @validator("postcode")
+    # def validate_postcode(cls, v):
+    #     REGEX_PATTERN = "/^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}$/i"
+    #     if not re.search(REGEX_PATTERN, v):
+    #         raise ValueError(f"Malformed postcode of {v} not acceptable!")
 
 
 class ApplicationRequestInput(BaseModel):

@@ -17,10 +17,6 @@ def info(message) -> None:
     logger.info(build_log_message(message))
 
 
-def log(message) -> None:
-    logger.log(build_log_message(message))
-
-
 def warn(message) -> None:
     logger.warn(build_log_message(message))
 

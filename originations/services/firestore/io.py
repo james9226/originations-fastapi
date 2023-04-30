@@ -18,7 +18,7 @@ async def post_batch_events(collection: str, events: dict) -> None:
     batch = firestore.batch()
 
     for id, body in events:
-        doc_ref = collection.document(id)
+        doc_ref = collection.document(id)  # type: ignore
         batch.set(doc_ref, body)
 
     await batch.commit()

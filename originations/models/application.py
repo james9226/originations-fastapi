@@ -17,8 +17,8 @@ class Address(BaseModel):
 
 
 class ApplicationRequest(BaseModel):
-    application_id: uuid.UUID = Field(default_factory=get_request_id())
-    event_time: datetime = Field(default_factory=datetime.now)
+    application_id: uuid.UUID
+    event_time: datetime
     applicant_hash: str
     first_name: str
     last_name: str
