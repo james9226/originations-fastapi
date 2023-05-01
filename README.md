@@ -9,6 +9,20 @@ This is a FastAPI project, containerized with docker and hosted on GCP cloud run
 
 It uses GitHub actions for a simple CI/CD flow, and uses google secrets manager. 
 
+
+### Run Locally
+
+You should have poetry and python already installed on your machine!
+
+Run `poetry env use 3.10` to create the virtual environment
+
+Run `poetry install --with dev` to install the project's dependancies, including dev dependancies
+
+Run `gcloud auth application-default login` to authenticate with google cloud
+
+Run `poetry run uvicorn originations.main:app --reload` to run the API locally in development mode (not dockerised)
+
+
 ## Project Configuration
 
 ### Secrets

@@ -1,6 +1,7 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
 class PastTriggers(BaseModel):
-    applicant_hash: str
-    triggered_rules: list[str]
+    event_time: datetime
+    triggers: list[str]

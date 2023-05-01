@@ -8,7 +8,7 @@ from originations.models.application import ApplicationRequest
 class EmploymentStatusRule(PolicyRule):
     rule_name = "EmploymentStatusRule"
 
-    def rule(self, application_request: ApplicationRequest):
+    def rule(self, application_request: ApplicationRequest, *args, **kwargs):
         acceptable_employment_statuses = [
             EmploymentStatus.FULL_TIME,
             EmploymentStatus.PART_TIME,

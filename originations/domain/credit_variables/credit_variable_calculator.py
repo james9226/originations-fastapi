@@ -1,6 +1,5 @@
 import uuid
 from originations.models.credit_variables import CreditVariables
-import originations.domain.credit_variables.variables as vars
 
 
 async def calculate_credit_variables(credit_file) -> CreditVariables:

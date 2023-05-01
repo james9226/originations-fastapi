@@ -6,15 +6,21 @@ from originations.enums.policy import PolicyOutcome, PolicyRuleResult
 from originations.services.firestore.firestore import load_firestore
 from originations.services.firestore.io import post_event
 from originations.services.logging import log_handler
+from originations.services.triggers_state_store.store import save_policy_triggers
 
 
 class PolicyRuleRunner:
     def __init__(
-        self, reference_id: uuid.UUID, applicant_hash: str, config: Sequence[PolicyRule]
+        self,
+        reference_id: uuid.UUID,
+        applicant_hash: str,
+        config: Sequence[PolicyRule],
+        phase: str,
     ):
         self.config = config
         self.applicant_hash = applicant_hash
         self.reference_id = reference_id
+        self.phase = phase
 
     def run_policy_rules(self, *args, **kwargs):
         self.rule_results = [x.run_rule(**kwargs) for x in self.config]
@@ -40,17 +46,14 @@ class PolicyRuleRunner:
         await batch.commit()
 
     async def save_policy_triggers(self):
-        await post_event(
-            "quotation_triggers_state_store",
+        await save_policy_triggers(
             self.applicant_hash,
-            {
-                "event_time": datetime.datetime.now(),
-                "triggered_rules": [
-                    x.rule_name
-                    for x in self.rule_results
-                    if x.result == PolicyRuleResult.TRIGGERED
-                ],
-            },
+            self.phase,
+            [
+                x.rule_name
+                for x in self.rule_results
+                if x.result == PolicyRuleResult.TRIGGERED
+            ],
         )
 
     async def get_final_policy_outcome(self):

@@ -9,7 +9,7 @@ async def mock_risk_model_service(
 ):
     await asyncio.sleep(0.2)
 
-    risk_score = (750 - credit_variables.credit_score) / 500
+    risk_score = (750 - credit_variables.credit_score) / 3000
 
     log_handler.info(f"Scored application with a risk score of {risk_score}")
 
