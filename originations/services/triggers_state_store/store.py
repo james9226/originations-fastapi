@@ -23,18 +23,6 @@ async def get_phase_policy_triggers(hash: str, phase: PolicyPhase):
     reference = (
         firestore.collection("triggers_store")
         .document(hash)
-        .collection("quotation")
-        .document("latest")
-    )
-
-    return await reference.get().to_dict()
-
-
-async def get_phase_policy_triggers(hash: str, phase: PolicyPhase):
-    firestore = await load_firestore()
-    reference = (
-        firestore.collection("triggers_store")
-        .document(hash)
         .collection(phase)
         .document("latest")
     )

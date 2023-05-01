@@ -18,23 +18,23 @@ class PastTriggersRule(PolicyRule):
             "MissedPaymentsLast12M",
         ]
 
-        recent_triggers = [
+        recent_triggers: list[list[str]] = [
             x.triggers
             for x in past_triggers
             if (datetime.now((timezone.utc)) - x.event_time).days < 180
         ]
-        flattened_triggers = [
+        flattened_triggers: list[str] = [
             trigger for sublist in recent_triggers for trigger in sublist
         ]
 
-        past_triggers = [
+        valid_triggers: list[str] = [
             trigger for trigger in flattened_triggers if trigger in blocked_rules
         ]
 
-        if len(past_triggers) > 0:
+        if len(valid_triggers) > 0:
             return self.result(
                 PolicyRuleResult.TRIGGERED,
-                f"Applicant has been recently declined for {str(past_triggers)}",
+                f"Applicant has been recently declined for {str(valid_triggers)}",
             )
 
         return self.result(
