@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.9-slim
 
 ENV POETRY_VERSION = 1.2.1
 
