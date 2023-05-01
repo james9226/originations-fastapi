@@ -6,7 +6,7 @@ from originations.enums.policy import PolicyRuleResult
 class PricingRule(PolicyRule):
     rule_name = "PricingRule"
 
-    def rule(self, price: Optional[float]):
+    def rule(self, price: Optional[float], *args, **kwargs):
         if price is None:
             return self.result(
                 PolicyRuleResult.TRIGGERED,

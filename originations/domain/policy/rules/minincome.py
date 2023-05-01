@@ -6,7 +6,7 @@ from originations.models.application import ApplicationRequest
 class MinIncomeRule(PolicyRule):
     rule_name = "MinIncomeRule"
 
-    def rule(self, application_request: ApplicationRequest):
+    def rule(self, application_request: ApplicationRequest, *args, **kwargs):
         income = application_request.gross_annual_income
 
         MIN_INCOME_THRESHOLD = 12570
