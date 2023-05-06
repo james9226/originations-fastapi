@@ -9,7 +9,7 @@ resource "google_pubsub_topic" "example" {
 
   depends_on = [google_pubsub_schema.example]
   schema_settings {
-    schema   = "projects/my-project-name/schemas/example"
+    schema   = "projects/${var.PROJECT_ID}/schemas/example"
     encoding = "JSON"
   }
 }
