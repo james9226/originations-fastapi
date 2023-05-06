@@ -29,7 +29,6 @@ jobs:
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
-      working-directory: ./infra
       if: steps.filter.outputs.infra-changed == 'true'
       uses: hashicorp/setup-terraform@v1
 
