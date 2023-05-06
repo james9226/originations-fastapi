@@ -62,7 +62,7 @@ jobs:
       run: terraform plan
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
-        TF_VAR_PROJECT_ID : ${{ GCP_PROJECT_ID }}
+        TF_VAR_PROJECT_ID : ${{ env.GCP_PROJECT_ID }}
 
   testing:
     runs-on: ubuntu-latest
