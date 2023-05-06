@@ -13,7 +13,7 @@ Environment variables are stored in the CD script, injected into the container a
 
 You should have poetry and python already installed on your machine!
 
-Run `poetry env use 3.9` to create the virtual environment
+Run `poetry env use 3.10` to create the virtual environment
 
 Run `poetry install --with dev` to install the project's dependancies, including dev dependancies
 
