@@ -50,6 +50,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      working-directory: ./infra
       if: steps.filter.outputs.infra-changed == 'true'
       run: terraform plan
       env:
