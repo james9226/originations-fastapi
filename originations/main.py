@@ -1,22 +1,25 @@
 import logging
+from logging.config import dictConfig
 import secrets
+
 from fastapi import FastAPI, HTTPException, Request, status, Depends
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
-from logging.config import dictConfig
+
 from originations.middleware.context import RequestContextMiddleware
 from originations.models.request import ApplicationRequestInput
-from originations.domain.application_orchestrator import application_orchestrator
 from originations.models.submission_request import SubmissionRequest
 from originations.services.logging.config import log_config
 from originations.services.secretsmanager.secrets import access_secret_version
-from originations.config.config import settings
+from originations.domain.application_orchestrator import application_orchestrator
 
+# Dictionary Config for our Logging!
 dictConfig(log_config)
 
+# Create the FastAPI App!
 app = FastAPI(
     title="Originations with FastAPI",
     version="0.1.0",
@@ -28,6 +31,9 @@ app = FastAPI(
 
 logger = logging.getLogger("api-logger")
 
+# This middleware attatches context IDs, as well as providing before and after logging
+# Middlewares run async, so we need the middleware that provides context IDs
+# to also do the before/after logging, otherwise the logging will not have access to the context IDs!
 app.add_middleware(RequestContextMiddleware)
 
 
@@ -58,26 +64,27 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     return JSONResponse(content=content, status_code=status.HTTP_400_BAD_REQUEST)
 
 
-## Create Auth Doc
 @app.get("/openapi.json", include_in_schema=False)
 async def openapi(username: str = Depends(get_current_username)):
     return get_openapi(title=app.title, version=app.version, routes=app.routes)
 
 
+## Docs Endpoing
 @app.get("/docs", include_in_schema=False)
 async def get_swagger_documentation(username: str = Depends(get_current_username)):
     return get_swagger_ui_html(openapi_url="/openapi.json", title="docs")
 
 
+## Application Endpoint
 @app.post("/v1/application/")
 async def application(
     request: ApplicationRequestInput, username: str = Depends(get_current_username)
 ):
-    print("Project id:", settings.project_id)
     result = await application_orchestrator(request)
     return result
 
 
+## Submission Endpoint
 @app.post("/v1/submission/")
 async def submission(
     request: SubmissionRequest, username: str = Depends(get_current_username)
