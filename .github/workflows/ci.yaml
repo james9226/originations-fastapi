@@ -5,7 +5,7 @@ on:
   workflow_call:
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'terraform'
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -26,6 +26,10 @@ jobs:
         filters: |
           infra-changed:
             - 'infra/**'
+
+    # Move to tf folder
+    - name: Move directory
+      run: cd infra
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
@@ -52,7 +56,7 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
     
-  application-testing:
+  testing:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
