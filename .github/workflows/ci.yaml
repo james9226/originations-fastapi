@@ -3,6 +3,14 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
   workflow_call:
+
+env:
+  SERVICE_NAME: default-service
+  IMAGE_NAME: default-service-fastapi
+  PROJECT: originations
+  GCP_PROJECT_ID: firebase-svelte-381023
+
+
 jobs:
   terraform:
     name: 'terraform'
@@ -54,7 +62,8 @@ jobs:
       run: terraform plan
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
-    
+        TF_VAR_PROJECT_ID : $GCP_PROJECT_ID
+
   testing:
     runs-on: ubuntu-latest
     steps:

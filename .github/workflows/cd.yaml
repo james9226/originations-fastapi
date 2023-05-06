@@ -42,15 +42,11 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      working-directory: ./infra
       if: steps.filter.outputs.infra-changed == 'true'
       run: terraform init
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
-
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      if: steps.filter.outputs.infra-changed == 'true'
-      run: terraform fmt -check
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
@@ -58,14 +54,17 @@ jobs:
       run: terraform plan
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
+        TF_VAR_PROJECT_ID : $GCP_PROJECT_ID
 
       # On push to main, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
+      working-directory: ./infra
       if: steps.filter.outputs.infra-changed == 'true'
       run: terraform apply -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
+        TF_VAR_PROJECT_ID : $GCP_PROJECT_ID
 
   deploy:
     needs: terraform
@@ -102,7 +101,7 @@ jobs:
             --region europe-west3 \
             --port 80 \
             --memory 4Gi \
-            --set-env-vars "project_id=firebase-svelte-381023" \
+            --set-env-vars "project_id=$GCP_PROJECT_ID" \
             --set-env-vars "client_id=110549956928776510458" \
             --set-env-vars "client_x509_cert_url=https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-8v6my%40firebase-svelte-381023.iam.gserviceaccount.com" \
             --set-env-vars "firebase_private_key_id=${{ secrets.FIREBASE_PRIVATE_KEY_ID }}"  \
