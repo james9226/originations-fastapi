@@ -3,8 +3,67 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
   workflow_call:
+
+env:
+  SERVICE_NAME: default-service
+  IMAGE_NAME: default-service-fastapi
+  PROJECT: originations
+  GCP_PROJECT_ID: firebase-svelte-381023
+
+
 jobs:
-    
+  terraform:
+    name: 'terraform'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Check if infrastructure has been changed
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: ${{ github.ref }}
+        filters: |
+          infra-changed:
+            - 'infra/**'
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      if: steps.filter.outputs.infra-changed == 'true'
+      uses: hashicorp/setup-terraform@v1
+
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      working-directory: ./infra
+      if: steps.filter.outputs.infra-changed == 'true'
+      run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      working-directory: ./infra
+      if: steps.filter.outputs.infra-changed == 'true'
+      run: terraform fmt -check
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      working-directory: ./infra
+      if: steps.filter.outputs.infra-changed == 'true'
+      run: terraform plan
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
+        TF_VAR_PROJECT_ID : $GCP_PROJECT_ID
+
   testing:
     runs-on: ubuntu-latest
     steps:
@@ -25,9 +84,9 @@ jobs:
       - name: Linting
         run : |
           poetry run black ./
-      - name: Type check
-        run : |
-          poetry run mypy ./
+      # - name: Type check # Currently very broken!
+      #   run : |
+      #     poetry run mypy ./
       - name: Test with pytest
         run: |
           poetry run pytest

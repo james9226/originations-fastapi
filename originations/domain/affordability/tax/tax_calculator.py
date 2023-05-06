@@ -29,9 +29,9 @@ def net_monthly_to_gross_annual_income(net_monthly_income: float) -> float:
     return annual_gross_income
 
 
-def tax_calculator(gross_annual_income: int) -> Union[float, int]:
-    tax = 0
-    taxable_income = gross_annual_income
+def tax_calculator(gross_annual_income: int) -> float:
+    tax = float(0)
+    taxable_income = float(gross_annual_income)
 
     if gross_annual_income < 0:
         return tax
