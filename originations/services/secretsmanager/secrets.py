@@ -1,8 +1,9 @@
 from google.cloud import secretmanager
+from originations.config.config import settings
 
 
 def access_secret_version(secret_id, version_id="latest"):
-    PROJECT_ID = "firebase-svelte-381023"
+    PROJECT_ID = settings.project_id
 
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()

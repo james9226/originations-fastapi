@@ -4,15 +4,16 @@
 ) ![CD](https://github.com/james9226/originations-fastapi/actions/workflows/cd.yaml/badge.svg
 )
 
-This is a FastAPI project, containerized with docker and hosted on GCP cloud run
+This is a FastAPI project, containerized with docker and hosted on GCP cloud run.
 
-It uses GitHub actions for a simple CI/CD flow, and uses google secrets manager.
+It uses GitHub actions for a simple CI/CD flow and google secrets manager for secrets management.
+Environment variables are stored in the CD script, injected into the container at deploy time with the cloud run deploy command and are managed at runtime with the Pydantic Settings class.
 
-### Run Locally
+## Run Locally
 
 You should have poetry and python already installed on your machine!
 
-Run `poetry env use 3.10` to create the virtual environment
+Run `poetry env use 3.9` to create the virtual environment
 
 Run `poetry install --with dev` to install the project's dependancies, including dev dependancies
 
@@ -26,9 +27,7 @@ Run `poetry run uvicorn originations.main:app --reload` to run the API locally i
 
 - Google Secrets Manager for the following secrets:
   - originations-api-key (basic auth password for the API)
-  - firebase_private_key_id
   - firebase_private_key
-  - firebase_client_email
 - GitHub Actions Secrets containing:
   - GitHub Service Account Key
   - Synk Token

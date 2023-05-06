@@ -1,9 +1,12 @@
 from google.cloud import pubsub_v1
+from originations.config.config import settings
 
 publisher = pubsub_v1.PublisherClient()
 
 
-async def publish_message_async(data: str, project_id: str, topic_id: str):
+async def publish_message_async(
+    data: str, topic_id: str, project_id: str = settings.project_id
+):
     topic_path = publisher.topic_path(project_id, topic_id)
 
     def _callback(future):
