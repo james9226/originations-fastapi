@@ -39,12 +39,12 @@ jobs:
         run: docker push europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME
 
       - name: Deploy new docker image to prod
-        run: >
-          gcloud run deploy $SERVICE_NAME 
-            --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME 
-            --region europe-west3 
-            --port 80 
-            --memory 4Gi 
-            --set-env-vars "project_id=firebase-svelte-381023" 
-            --set-env-vars "client_id=110549956928776510458" 
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME \
+            --region europe-west3 \
+            --port 80 \
+            --memory 4Gi \
+            --set-env-vars "project_id=firebase-svelte-381023" \
+            --set-env-vars "client_id=110549956928776510458" \
             --set-env-vars "client_x509_cert_url=https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-8v6my%40firebase-svelte-381023.iam.gserviceaccount.co" 
