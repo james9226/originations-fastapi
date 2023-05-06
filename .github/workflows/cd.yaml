@@ -38,6 +38,13 @@ jobs:
       - name: Push docker image to GCR
         run: docker push europe-west3-docker.pkg.dev/$GCP_PROJECT_ID/$PROJECT/$IMAGE_NAME
 
+
+      - name : Peek
+        run : echo ${{ secrets.FIREBASE_PRIVATE_KEY_ID }}
+
+      - name: Peek 2
+        run : ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+
       - name: Deploy new docker image to prod
         run: |
           gcloud run deploy $SERVICE_NAME \
