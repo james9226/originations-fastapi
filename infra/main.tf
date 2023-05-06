@@ -7,6 +7,7 @@ terraform {
   }
 }
 
+//Main GCP Diagonstics
 provider "google" {
   project = var.PROJECT_ID
   region  = var.region
