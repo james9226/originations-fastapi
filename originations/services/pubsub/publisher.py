@@ -15,6 +15,6 @@ async def publish_message_async(
         except Exception as e:
             print(f"An error occurred: {e}")
 
-    data = data.encode("utf-8")
-    future = publisher.publish(topic_path, data)
+    data_as_bytes = data.encode("utf-8")
+    future = publisher.publish(topic_path, data_as_bytes)
     future.add_done_callback(_callback)
