@@ -388,6 +388,28 @@ proto-plus = [
 protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
 
 [[package]]
+name = "google-cloud-pubsub"
+version = "2.16.1"
+description = "Google Cloud Pub/Sub API client library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+google-api-core = {version = ">=1.34.0,<2.0.0 || >=2.11.0,<3.0.0dev", extras = ["grpc"]}
+grpc-google-iam-v1 = ">=0.12.4,<1.0.0dev"
+grpcio = ">=1.51.3,<2.0dev"
+grpcio-status = ">=1.33.2"
+proto-plus = [
+    {version = ">=1.22.0,<2.0.0dev", markers = "python_version < \"3.11\""},
+    {version = ">=1.22.2,<2.0.0dev", markers = "python_version >= \"3.11\""},
+]
+protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
+
+[package.extras]
+libcst = ["libcst (>=0.3.10)"]
+
+[[package]]
 name = "google-cloud-secret-manager"
 version = "2.16.1"
 description = "Google Cloud Secret Manager API client library"
@@ -912,6 +934,17 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "pywin32"
 version = "306"
 description = "Python for Window Extensions"
@@ -1173,7 +1206,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "044056bdffde1ccc7022b3875dc7d208f8f9e95cb7625928a7519f94b5d14aed"
+content-hash = "66531919b8691b726fbb166237d1e68a36614e6f320b5a66a434a9ae4f3c1fb1"
 
 [metadata.files]
 aiohttp = [
@@ -1673,6 +1706,10 @@ google-cloud-firestore = [
     {file = "google-cloud-firestore-2.11.1.tar.gz", hash = "sha256:7f7dfa86567c8d66c66c8dba8bc5ef85677c8532b4206055a339413f8071525d"},
     {file = "google_cloud_firestore-2.11.1-py2.py3-none-any.whl", hash = "sha256:833019175b6c82727da71e2db2fdea9bf203d0b8239c696492f7e2b24566bb3e"},
 ]
+google-cloud-pubsub = [
+    {file = "google-cloud-pubsub-2.16.1.tar.gz", hash = "sha256:31e271be755ed7143ae0cdfed0506faf40d7504b46fa5c8b5bab4b922f6c3d3b"},
+    {file = "google_cloud_pubsub-2.16.1-py2.py3-none-any.whl", hash = "sha256:5bb4f2a6d2d0bf827d48dca1de1fb0ca12636ed75a69bbc4f89d231239b65ad9"},
+]
 google-cloud-secret-manager = [
     {file = "google-cloud-secret-manager-2.16.1.tar.gz", hash = "sha256:149d11ce9be7ea81d4ac3544d3fcd4c716a9edb2cb775d9c075231570b079fbb"},
     {file = "google_cloud_secret_manager-2.16.1-py2.py3-none-any.whl", hash = "sha256:dad28c24921fb62961aafe808be0e7935a99096f03ac29eeeefa04b85534c1f3"},
@@ -2090,6 +2127,10 @@ pytest = [
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+]
+python-dotenv = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
 ]
 pywin32 = [
     {file = "pywin32-306-cp310-cp310-win32.whl", hash = "sha256:06d3420a5155ba65f0b72f2699b5bacf3109f36acbe8923765c22938a69dfc8d"},

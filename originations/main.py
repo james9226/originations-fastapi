@@ -1,19 +1,19 @@
 import logging
-import time
 import secrets
 from fastapi import FastAPI, HTTPException, Request, status, Depends
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
+from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
 from logging.config import dictConfig
-from originations.middleware.context import RequestContextMiddleware, get_request_id
+from originations.middleware.context import RequestContextMiddleware
 from originations.models.request import ApplicationRequestInput
 from originations.domain.application_orchestrator import application_orchestrator
 from originations.models.submission_request import SubmissionRequest
 from originations.services.logging.config import log_config
 from originations.services.secretsmanager.secrets import access_secret_version
+from originations.config.config import settings
 
 dictConfig(log_config)
 
@@ -29,6 +29,7 @@ app = FastAPI(
 logger = logging.getLogger("api-logger")
 
 app.add_middleware(RequestContextMiddleware)
+
 
 ## Initial Basic Auth
 security = HTTPBasic()
@@ -72,6 +73,7 @@ async def get_swagger_documentation(username: str = Depends(get_current_username
 async def application(
     request: ApplicationRequestInput, username: str = Depends(get_current_username)
 ):
+    print("Project id:", settings.project_id)
     result = await application_orchestrator(request)
     return result
 
