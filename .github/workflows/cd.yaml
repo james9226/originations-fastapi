@@ -12,7 +12,7 @@ env:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'terraform'
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -24,15 +24,6 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
-
-    # Check if infrastructure has been changed
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        base: ${{ github.ref }}
-        filters: |
-          infra-changed:
-            - 'infra/**'
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform

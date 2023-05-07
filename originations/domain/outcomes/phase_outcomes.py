@@ -1,7 +1,7 @@
 from datetime import datetime
 from originations.enums.policy import PolicyOutcome
-from originations.services.firestore.io import post_event
 from originations.services.logging import log_handler
+from originations.services.pubsub.async_publisher import publish_message
 
 
 async def phase_outcome_decider(application_id, policy_outcome, phase):
@@ -11,10 +11,9 @@ async def phase_outcome_decider(application_id, policy_outcome, phase):
         PolicyOutcome.DECLINED_WITH_REAPPLICATION_ALLOWED,
     ]
 
-    await post_event(
-        f"{phase}_outcomes",
-        str(application_id),
-        {"outcome": policy_outcome, "event_time": datetime.now()},
+    await publish_message(
+        {"reference_id": str(application_id), "outcome": policy_outcome},
+        "phase_outcomes_topic",
     )
 
     if policy_outcome in declined_outcomes:
