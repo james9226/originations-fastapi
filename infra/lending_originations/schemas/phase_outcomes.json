@@ -11,6 +11,10 @@
         "type":"string"
       },
       {
+        "name":"phase",
+        "type":"string"
+      },
+      {
         "name":"outcome",
         "type":"string"
       }
