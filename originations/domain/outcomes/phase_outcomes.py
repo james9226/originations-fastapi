@@ -12,7 +12,11 @@ async def phase_outcome_decider(application_id, policy_outcome, phase):
     ]
 
     await publish_message(
-        {"reference_id": str(application_id), "outcome": policy_outcome},
+        {
+            "reference_id": str(application_id),
+            "phase": phase,
+            "outcome": policy_outcome,
+        },
         "phase_outcomes_topic",
     )
 
