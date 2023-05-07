@@ -1,12 +1,13 @@
 variable "PROJECT_ID" {
   type        = string
-  description = "This is an example input variable using env variables."
+  description = "Project ID for this project."
+  default     = "firebase-svelte-381023"
 }
 
 variable "region" {
-  default = "us-central1"
+  default = "europe-west3"
 }
 
 variable "zone" {
-  default = "us-central1-c"
+  default = "europe-west3-a"
 }
