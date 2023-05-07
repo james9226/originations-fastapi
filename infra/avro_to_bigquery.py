@@ -31,7 +31,6 @@ def avro_field_to_bigquery_field(avro_field):
 
 
 def avro_schema_to_bigquery_schema(avro_schema: dict):
-    # raise ValueError(avro_schema)
     avro_fields = avro_schema.get("fields")
     return [avro_field_to_bigquery_field(field) for field in avro_fields]
 
