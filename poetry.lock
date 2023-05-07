@@ -38,6 +38,18 @@ six = "*"
 test = ["astroid", "pytest"]
 
 [[package]]
+name = "avro-python3"
+version = "1.10.2"
+description = "Avro is a serialization and RPC framework."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+snappy = ["python-snappy"]
+zstandard = ["zstandard"]
+
+[[package]]
 name = "backcall"
 version = "0.2.0"
 description = "Specifications for callback functions passed in to an API"
@@ -1017,7 +1029,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "4616366db471f95e9270ce26a76309efe73abcce4f7b5f2bacca8ecaa6a61e8b"
+content-hash = "08a8a90d6d00c9f5d03885ddb29b8153cbb40991d655c63639c0bbd873787391"
 
 [metadata.files]
 anyio = [
@@ -1031,6 +1043,9 @@ appnope = [
 asttokens = [
     {file = "asttokens-2.2.1-py2.py3-none-any.whl", hash = "sha256:6b0ac9e93fb0335014d382b8fa9b3afa7df546984258005da0b9e7095b3deb1c"},
     {file = "asttokens-2.2.1.tar.gz", hash = "sha256:4622110b2a6f30b77e1473affaa97e711bc2f07d3f10848420ff1898edbe94f3"},
+]
+avro-python3 = [
+    {file = "avro-python3-1.10.2.tar.gz", hash = "sha256:3b63f24e6b04368c3e4a6f923f484be0230d821aad65ac36108edbff29e9aaab"},
 ]
 backcall = [
     {file = "backcall-0.2.0-py2.py3-none-any.whl", hash = "sha256:fbbce6a29f263178a1f7915c1940bde0ec2b2a967566fe1c65c1dfb7422bd255"},

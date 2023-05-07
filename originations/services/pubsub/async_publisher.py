@@ -1,30 +1,83 @@
-import datetime
+from datetime import datetime
 import json
+import asyncio
 from google.cloud import pubsub_v1
-import fastavro
-from io import BytesIO
+from originations.config.config import settings
 from originations.services.logging import log_handler
 
-pubsub_publisher = pubsub_v1.PublisherClient()
+
+async def publish_message(
+    message_json: dict, topic_id: str, project_id: str = settings.project_id
+) -> None:
+    # Create a publisher client
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+
+    # Encode the message as a JSON string
+    message_json["event_time"] = (
+        datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+    )
+
+    print(message_json)
+    message_data = json.dumps(message_json).encode("utf-8")
+
+    # Define the callback function for async publishing
+    def get_callback(future, data):
+        def callback(future):
+            try:
+                pass
+            except Exception as e:
+                log_handler.error(f"Publishing {data} raised an exception: {e}")
+
+        return callback
+
+    # Publish the message asynchronously
+    loop = asyncio.get_event_loop()
+    future = loop.run_in_executor(None, publisher.publish, topic_path, message_data)
+    future.add_done_callback(get_callback(future, message_data))
+
+    # Wait for the message to be sent
+    await future
 
 
-def serialize_avro(record, schema):
-    bytes_writer = BytesIO()
-    fastavro.schemaless_writer(bytes_writer, schema, record)
-    return bytes_writer.getvalue()
+async def publish_batch_messages(
+    messages_json: list[dict], topic_id: str, project_id: str = settings.project_id
+) -> None:
+    # Create a publisher client
+    publisher = pubsub_v1.PublisherClient(
+        batch_settings=pubsub_v1.types.BatchSettings()
+    )
+    topic_path = publisher.topic_path(project_id, topic_id)
 
+    # Encode the messages as JSON strings
+    message_data_list = [
+        json.dumps(
+            msg
+            | {
+                "event_time": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
+                + "Z"
+            }
+        ).encode("utf-8")
+        for msg in messages_json
+    ]
 
-async def push_to_pubsub(topic_path, record, avro_schema):
-    avro_binary = serialize_avro(record, avro_schema)
+    # Define the callback function for async publishing
+    def get_callback(future, data):
+        def callback(future):
+            try:
+                pass
+            except Exception as e:
+                log_handler.error(f"Publishing {data} raised an exception: {e}")
 
-    # Create a future object to wait for the publish result
-    future = pubsub_publisher.publish(topic_path, avro_binary)
+        return callback
 
-    # Add a callback to get the result of the publish operation
-    def callback(future):
-        try:
-            pass
-        except Exception as e:
-            log_handler.error(f"An error occurred when publishing the message: {e}")
+    # Publish the messages asynchronously in a batch
+    futures = []
+    loop = asyncio.get_event_loop()
+    for message_data in message_data_list:
+        future = loop.run_in_executor(None, publisher.publish, topic_path, message_data)
+        future.add_done_callback(get_callback(future, message_data))
+        futures.append(future)
 
-    future.add_done_callback(callback)
+    # Wait for all messages to be sent
+    await asyncio.gather(*futures)

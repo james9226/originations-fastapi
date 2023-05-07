@@ -1,7 +1,7 @@
 resource "google_pubsub_schema" "policy_rule_results" {
   name       = "policy_rule_results"
   type       = "AVRO"
-  definition = file("./../originations/schemas/policy_rule_results.json")
+  definition = file("./lending_originations/schemas/policy_rule_results.json")
 }
 
 resource "google_pubsub_topic" "policy_rule_results" {
@@ -32,17 +32,11 @@ resource "google_pubsub_subscription" "policy_rule_results" {
 }
 
 
-resource "google_bigquery_dataset" "lending_originations" {
-  dataset_id = "lending_originations"
-  location   = "EU"
-}
-
-
-data "external" "avro_to_bigquery_schema" {
-  program = ["python", "${path.module}/avro_to_bigquery.py"]
+data "external" "policy_rule_results_bq_schema" {
+  program = ["python", "${path.module}/../functions/avro_to_bigquery.py"]
 
   query = {
-    avro_schema = "./../originations/schemas/policy_rule_results.json"
+    avro_schema = "./lending_originations/schemas/policy_rule_results.json"
   }
 }
 
@@ -51,5 +45,5 @@ resource "google_bigquery_table" "policy_rule_results" {
   table_id            = "policy_rule_results"
   dataset_id          = google_bigquery_dataset.lending_originations.dataset_id
 
-  schema = data.external.avro_to_bigquery_schema.result.converted_schema
+  schema = data.external.policy_rule_results_bq_schema.result.converted_schema
 }

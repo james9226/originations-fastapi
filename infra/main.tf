@@ -15,3 +15,8 @@ provider "google" {
 
 data "google_project" "project" {
 }
+
+
+module "lending_originations" {
+  source = "./lending_originations"
+}
