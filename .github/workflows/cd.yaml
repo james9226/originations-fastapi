@@ -11,8 +11,31 @@ env:
   GCP_PROJECT_ID: firebase-svelte-381023
 
 jobs:
+  deploy-scoping:
+    name: 'deploy-scoping'
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-infra: ${{ steps.filter.outputs.infra-changed }}
+      deploy-app: ${{ steps.filter.outputs.app-changed }}
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: ${{ github.ref }}
+        filters: |
+          infra-changed:
+            - 'infra/**'
+          app-changed:
+            - 'originations/**'
+
   terraform:
     name: 'terraform'
+    needs: [deploy-scoping]
+    if: needs.deploy-scoping.outputs.deploy-infra == 'true'
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -56,8 +79,9 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
 
   deploy:
-    needs: terraform
+    needs: [deploy-scoping, terraform]
     runs-on: ubuntu-latest
+    if: needs.deploy-scoping.outputs.deploy-app == 'true'
     steps:
       - uses: actions/checkout@v3
 
