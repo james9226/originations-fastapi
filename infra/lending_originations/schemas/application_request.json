@@ -1,0 +1,51 @@
+{
+    "type": "record",
+    "name": "Avro",
+    "fields": [
+      {
+        "name": "application_id",
+        "type": "string"
+      },
+      {
+        "name": "event_time",
+        "type": "string"
+      },
+      {
+        "name": "applicant_hash",
+        "type": "string"
+      },
+      {
+        "name": "gross_annual_income",
+        "type": "int"
+      },
+      {
+        "name": "monthly_housing_costs",
+        "type": "int"
+      },
+      {
+        "name": "residential_status",
+        "type": "string"
+      },
+      {
+        "name": "marital_status",
+        "type": "string"
+      },
+      {
+        "name": "employment_status",
+        "type": "string"
+      },
+      {
+        "name": "employer_name",
+        "type": "string"
+      },
+      {
+        "name": "loan_amount",
+        "type": "int"
+      },
+      {
+        "name": "loan_term_in_months",
+        "type": "int"
+      }
+    ]
+  }
+  

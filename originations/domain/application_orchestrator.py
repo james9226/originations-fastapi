@@ -25,6 +25,7 @@ from originations.services.scorecard.risk_model_service import mock_risk_model_s
 from originations.services.bureau.equifax.load_file import mock_equifax_request
 from originations.services.firestore.io import post_event
 from originations.services.triggers_state_store.store import get_policy_triggers
+from originations.services.pubsub.async_publisher import publish_message
 
 
 async def application_orchestrator(raw_request: ApplicationRequestInput):
@@ -69,6 +70,21 @@ async def application_orchestrator(raw_request: ApplicationRequestInput):
     prevetting_policy_outcome, _ = await asyncio.gather(
         prevetting_endpoint(request, past_triggers),
         post_event("application_requests", str(request.application_id), request.dict()),
+        publish_message(
+            {
+                "application_id": str(request.application_id),
+                "applicant_hash": str(request.applicant_hash),
+                "gross_annual_income": request.gross_annual_income,
+                "monthly_housing_costs": request.monthly_housing_costs,
+                "residential_status": request.residential_status.value,
+                "marital_status": request.marital_status.value,
+                "employment_status": request.employment_status.value,
+                "employer_name": request.employer_name,
+                "loan_amount": request.loan_amount,
+                "loan_term_in_months": request.loan_term_in_months,
+            },
+            topic_id="application_request_topic",
+        ),
     )
 
     if await phase_outcome_decider(
