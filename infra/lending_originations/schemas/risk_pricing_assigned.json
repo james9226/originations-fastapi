@@ -20,9 +20,9 @@
       },
       {
         "name":"price",
-        "type":[ "null", "double" ],
-        "default": "null" 
-      }
+        "type":["null", "double"],
+        "default": null
+       }
 
     ]
   }

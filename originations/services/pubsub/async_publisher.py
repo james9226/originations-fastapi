@@ -4,6 +4,14 @@ import asyncio
 from google.cloud import pubsub_v1
 from originations.config.config import settings
 from originations.services.logging import log_handler
+from typing import Any, Optional
+
+
+def nullable(type: str, value: Optional[Any] = None) -> str:
+    if not value:
+        return value
+    else:
+        return {type: value}
 
 
 async def publish_message(

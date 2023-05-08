@@ -2,7 +2,7 @@ from originations.domain.risk_segment_assigner.config import RISK_SEGMENT_CUTOFF
 from originations.models.application import ApplicationRequest
 from originations.models.credit_variables import CreditVariables
 from originations.services.scorecard.risk_model_service import mock_risk_model_service
-from originations.services.pubsub.async_publisher import publish_message
+from originations.services.pubsub.async_publisher import publish_message, nullable
 from originations.domain.pricing.pricing import get_pricing
 from originations.services.logging import log_handler
 
@@ -29,7 +29,7 @@ async def risk_pricing_assigner(
             "reference_id": str(request.application_id),
             "risk_score": risk_score,
             "risk_segment": risk_segment,
-            "price": apr,
+            "price": nullable("double", apr),
         },
         "risk_pricing_assigned_topic",
     )
