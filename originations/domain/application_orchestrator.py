@@ -17,6 +17,7 @@ from originations.domain.applicant_hash.hasher import hash_application
 from originations.domain.outcomes.phase_outcomes import phase_outcome_decider
 from originations.domain.outcomes.result import application_result
 from originations.domain.risk_segment_assigner.risk_segment_calculator import (
+    risk_pricing_assigner,
     risk_segment_calculator,
 )
 from originations.services.logging import log_handler
@@ -96,11 +97,11 @@ async def application_orchestrator(raw_request: ApplicationRequestInput):
 
     credit_variables = await calculate_credit_variables(credit_file)
 
-    risk_score = await mock_risk_model_service(request, credit_variables)
+    price = await risk_pricing_assigner(request, credit_variables)
 
-    risk_segment = await risk_segment_calculator(risk_score)
+    # risk_segment = await risk_segment_calculator(risk_score)
 
-    price = await get_pricing(risk_segment)
+    # price = await get_pricing(risk_segment)
 
     min_income_required = await affordability_calculator(
         credit_variables, request, price
