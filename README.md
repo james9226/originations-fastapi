@@ -101,3 +101,4 @@ Run `poetry run uvicorn originations.main:app --reload` to run the API locally i
 - Enable CodeQL for ongoing vulenerability scanning of main branch
 - Finish the main application!!
 - Build a frontend!
+- Fix MyPy so the project is fully type-safe (currently disabled)
