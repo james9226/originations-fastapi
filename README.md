@@ -15,7 +15,7 @@ Environment variables are stored in the CD script, injected into the container a
     ├── pyproject.toml             # App Dependancies
     ├── /tests                     # Test files (alternatively `spec` or `tests`)
     │
-    ├── /originations              # Infrastructure (Terraform) configuration
+    ├── /originations              # The Originations App!
     │   ├── main.py                # FastAPI application entrypoint
     │   ├── /config                # Environment and configuration used throughout the app
     │   ├── /domain                # Domain functions used to decision an application
