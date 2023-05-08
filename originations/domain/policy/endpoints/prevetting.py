@@ -4,11 +4,11 @@ from originations.domain.policy.phase_config.prevetting import PREVETTING_RULES
 from originations.domain.policy.models.policy_rule_runner import (
     PolicyRuleRunner,
 )
-from originations.models.past_triggers import PastTriggers
+from originations.models.past_triggers import PastPolicyTrigger
 
 
 async def prevetting_endpoint(
-    request: ApplicationRequest, past_triggers: list[PastTriggers]
+    request: ApplicationRequest, past_triggers: list[PastPolicyTrigger]
 ):
     policy_rules = PolicyRuleRunner(
         request.application_id, request.applicant_hash, PREVETTING_RULES, "prevetting"
