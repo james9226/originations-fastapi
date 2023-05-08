@@ -58,11 +58,11 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}
 
     - name: Create comment on copy file failure
-      uses: peter-evans/create-or-update-comment@v2
+      uses: peter-evans/create-or-update-comment@v3
       env:
         PLAN: "${{ steps.plan.outputs.stdout }}"
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         issue-number: ${{github.event.pull_request.number}}
         body: |
           `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
