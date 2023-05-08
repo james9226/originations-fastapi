@@ -9,6 +9,29 @@ This is a FastAPI project, containerized with docker and hosted on GCP cloud run
 It uses GitHub actions for a simple CI/CD flow and google secrets manager for secrets management.
 Environment variables are stored in the CD script, injected into the container at deploy time with the cloud run deploy command and are managed at runtime with the Pydantic Settings class.
 
+## Project Structure
+
+    .
+    ├── pyproject.toml             # App Dependancies
+    ├── /tests                     # Test files (alternatively `spec` or `tests`)
+    │
+    ├── /originations              # Infrastructure (Terraform) configuration
+    │   ├── main.py                # FastAPI application entrypoint
+    │   ├── /config                # Environment and configuration used throughout the app
+    │   ├── /domain                # Domain functions used to decision an application
+    │   ├── /enums                 # Common enums used through the app
+    │   ├── /middleware            # Logging and context middleware for the app
+    │   ├── /models                # Pydantic Data models used throughout the app
+    │   └── /services              # External (sometimes mocked) services that the app interacts with
+    │
+    ├── /infra                     # Infrastructure (Terraform) configuration
+    │   ├── /functions             # Helper functions used in terraform pipelie
+    │   ├── /lending_originations  # Configuration for lending_originations dataset tables + pipelines
+    │   └── unit                   # Unit tests
+    │
+    └── /docs                      # Documentation for the project
+
+
 ## Infrastructure
 
 ![Infra Diagram](https://github.com/james9226/originations-fastapi/blob/main/docs/Infrastructure.drawio.png?raw=true)
