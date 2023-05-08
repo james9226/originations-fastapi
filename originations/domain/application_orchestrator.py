@@ -67,7 +67,7 @@ async def application_orchestrator(raw_request: ApplicationRequestInput):
 
     past_triggers = await get_policy_triggers(hash)
 
-    prevetting_policy_outcome, _ = await asyncio.gather(
+    prevetting_policy_outcome, _, _ = await asyncio.gather(
         prevetting_endpoint(request, past_triggers),
         post_event("application_requests", str(request.application_id), request.dict()),
         publish_message(

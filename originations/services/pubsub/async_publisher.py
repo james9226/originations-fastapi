@@ -18,7 +18,6 @@ async def publish_message(
         datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
     )
 
-    print(message_json)
     message_data = json.dumps(message_json).encode("utf-8")
 
     # Define the callback function for async publishing
