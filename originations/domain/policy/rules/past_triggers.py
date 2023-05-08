@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from originations.domain.policy.models.policy_rule import PolicyRule
 from originations.enums.policy import PolicyRuleResult
-from originations.models.past_triggers import PastTriggers
+from originations.models.past_triggers import PastPolicyTrigger
 
 
 class PastTriggersRule(PolicyRule):
@@ -9,7 +9,7 @@ class PastTriggersRule(PolicyRule):
 
     def rule(
         self,
-        past_triggers: list[PastTriggers],
+        past_triggers: list[PastPolicyTrigger],
         *args,
         **kwargs,
     ):
@@ -18,17 +18,14 @@ class PastTriggersRule(PolicyRule):
             "MissedPaymentsLast12M",
         ]
 
-        recent_triggers: list[list[str]] = [
-            x.triggers
+        recent_triggers = [
+            x
             for x in past_triggers
             if (datetime.now((timezone.utc)) - x.event_time).days < 180
         ]
-        flattened_triggers: list[str] = [
-            trigger for sublist in recent_triggers for trigger in sublist
-        ]
 
-        valid_triggers: list[str] = [
-            trigger for trigger in flattened_triggers if trigger in blocked_rules
+        valid_triggers = [
+            trigger.rule for trigger in recent_triggers if trigger.rule in blocked_rules
         ]
 
         if len(valid_triggers) > 0:

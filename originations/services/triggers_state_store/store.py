@@ -2,44 +2,34 @@ import asyncio
 from datetime import datetime
 from originations.enums.policy import PolicyPhase
 from originations.services.firestore.firestore import load_firestore
-from originations.models.past_triggers import PastTriggers
+from originations.models.past_triggers import PastPolicyTrigger
 
 
-async def save_policy_triggers(hash: str, phase: str, triggers: list[str]):
+async def save_policy_triggers(hash: str, phase: str, triggers: list[str]) -> None:
     firestore = await load_firestore()
 
-    reference = (
-        firestore.collection("triggers_store")
-        .document(hash)
-        .collection(phase)
-        .document("latest")
-    )
+    reference = firestore.collection("triggers_state_store").document(hash)
 
-    await reference.set({"event_time": datetime.now(), "triggers": triggers})
+    body = {rule: {"event_time": datetime.now(), "phase": phase} for rule in triggers}
+
+    await reference.set(body, merge=True)
 
 
-async def get_phase_policy_triggers(hash: str, phase: PolicyPhase):
+async def get_policy_triggers(hash: str) -> list[PastPolicyTrigger]:
     firestore = await load_firestore()
-    reference = (
-        firestore.collection("triggers_store")
-        .document(hash)
-        .collection(phase)
-        .document("latest")
-    )
 
-    data = await reference.get()
+    query = firestore.collection("triggers_state_store").document(hash)
 
-    data_dict = data.to_dict()
+    data = await query.get()
 
-    if data_dict is not None:
-        return PastTriggers(**data_dict)
+    if data.to_dict() is None:
+        return []
+    else:
+        data_dict = data.to_dict()
 
-    return None
+    triggers = [
+        PastPolicyTrigger(rule=k, event_time=v["event_time"], phase=v["phase"])
+        for k, v in data_dict.items()
+    ]
 
-
-async def get_policy_triggers(hash: str):
-    coros = [get_phase_policy_triggers(hash, phase) for phase in PolicyPhase]
-
-    res = await asyncio.gather(*coros)
-
-    return [x for x in res if x is not None]
+    return triggers
