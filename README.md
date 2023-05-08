@@ -25,9 +25,9 @@ Environment variables are stored in the CD script, injected into the container a
     │   └── /services              # External (sometimes mocked) services that the app interacts with
     │
     ├── /infra                     # Infrastructure (Terraform) configuration
+    │   ├── .                      # Primary terraform configuration
     │   ├── /functions             # Helper functions used in terraform pipelie
-    │   ├── /lending_originations  # Configuration for lending_originations dataset tables + pipelines
-    │   └── unit                   # Unit tests
+    │   └── /lending_originations  # Configuration for lending_originations dataset tables + pipelines
     │
     └── /docs                      # Documentation for the project
 
