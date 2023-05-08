@@ -1,3 +1,4 @@
+
 resource "google_pubsub_schema" "phase_outcomes" {
   name       = "phase_outcomes"
   type       = "AVRO"

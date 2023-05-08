@@ -1,4 +1,11 @@
 terraform {
+  cloud {
+    organization = "jamesn9"
+
+    workspaces {
+      name = "gcp-infra"
+    }
+  }
   required_providers {
     google = {
       source  = "hashicorp/google"
