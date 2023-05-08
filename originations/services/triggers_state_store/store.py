@@ -1,11 +1,12 @@
-import asyncio
 from datetime import datetime
 from originations.enums.policy import PolicyPhase
 from originations.services.firestore.firestore import load_firestore
 from originations.models.past_triggers import PastPolicyTrigger
 
 
-async def save_policy_triggers(hash: str, phase: str, triggers: list[str]) -> None:
+async def save_policy_triggers(
+    hash: str, phase: PolicyPhase, triggers: list[str]
+) -> None:
     firestore = await load_firestore()
 
     reference = firestore.collection("triggers_state_store").document(hash)
