@@ -35,6 +35,7 @@ jobs:
   terraform:
     name: 'terraform'
     needs: [deploy-scoping]
+    if: needs.deploy-scoping.outputs.deploy-infra == 'true'
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -80,7 +81,7 @@ jobs:
 
   deploy:
     needs: [deploy-scoping, terraform]
-    if: needs.deploy-scoping.outputs.deploy-app == 'true'
+    if: always() && needs.deploy-scoping.outputs.deploy-app == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
