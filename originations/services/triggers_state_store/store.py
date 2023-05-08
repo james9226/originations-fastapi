@@ -18,9 +18,9 @@ async def save_policy_triggers(hash: str, phase: str, triggers: list[str]) -> No
 async def get_policy_triggers(hash: str) -> list[PastPolicyTrigger]:
     firestore = await load_firestore()
 
-    query = firestore.collection("triggers_state_store").document(hash)
+    doc_reference = firestore.collection("triggers_state_store").document(hash)
 
-    data = await query.get()
+    data = await doc_reference.get()
 
     if data.to_dict() is None:
         return []
