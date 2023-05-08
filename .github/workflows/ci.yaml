@@ -61,13 +61,12 @@ jobs:
 
     - name: Create comment on copy file failure
       uses: peter-evans/create-or-update-comment@v2
-      env:
-        PLAN: "${{ steps.plan.outputs.stdout }}"
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         issue-number: ${{github.event.pull_request.number}}
         body: |
-          `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          `
+          #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
           #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
@@ -75,7 +74,7 @@ jobs:
           <details><summary>Show Plan</summary>
       
           \`\`\`terraform\n
-          ${process.env.PLAN}
+          ${{ steps.plan.outputs.stdout }}
           \`\`\`
       
           </details>
