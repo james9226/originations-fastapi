@@ -1,0 +1,28 @@
+{
+    "type": "record",
+    "name": "Avro",
+    "fields": [
+      {
+        "name":"event_time",
+        "type":"string"
+      },
+      {
+        "name":"reference_id",
+        "type":"string"
+      },
+      {
+        "name":"risk_score",
+        "type":"double"
+      },
+      {
+        "name":"risk_segment",
+        "type":"int"
+      },
+      {
+        "name":"price",
+        "type":[ "null", "double" ],
+        "default": "null" 
+      }
+
+    ]
+  }
