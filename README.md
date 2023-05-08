@@ -13,6 +13,22 @@ Environment variables are stored in the CD script, injected into the container a
 
 ![Infra Diagram](https://github.com/james9226/originations-fastapi/blob/main/Infrastructure.drawio.png?raw=true)
 
+The Infrastructure used is as follows:
+
+- Cloud Run hosts a Dockerized Python FastAPI application, which is a monolithic application serving all requests. 
+- Cloud Firestore is used as a production DB
+- Pub/Sub is used to stream reporting events to BigQuery in realtime
+- Terraform is used to configure both Pub/Sub and the resultant BigQuery tables 
+- GitHub actions automates the CI suite:
+  - PyTest
+  - MyPy
+  - Snyk Vulnerability Scanning
+  - Terraform Validation / Planning
+- GitHub actions also automates the CD suite:
+  - Docker Build -> Cloud Registry -> Deploy pipeline for the main app
+  - Terraform 
+- Google Secrets Manager for sensitive credentials
+- Cloud IAM for access management
 
 ## Run Locally
 
@@ -44,3 +60,10 @@ Run `poetry run uvicorn originations.main:app --reload` to run the API locally i
   - Cloud Run Developer
   - Artifact Registry Add/Push
   - It also needs to be registered as a permitted user of the service account for cloud run!
+  
+## TODO
+- Migrate production from Cloud Firestore to Cloud SQL (or other SQL DB)
+- Fully configure production DB, IAM, Secrets and Cloud Run in Terraform
+- Enable CodeQL for ongoing vulenerability scanning of main branch
+- Finish the main application!!
+- Build a frontend!
