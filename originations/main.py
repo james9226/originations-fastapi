@@ -12,6 +12,7 @@ from fastapi.openapi.utils import get_openapi
 from originations.middleware.context import RequestContextMiddleware
 from originations.models.request import ApplicationRequestInput
 from originations.models.submission_request import SubmissionRequest
+from originations.services.authentication.api_authentication import authenticate
 from originations.services.logging.config import log_config
 from originations.services.secretsmanager.secrets import access_secret_version
 from originations.domain.application_orchestrator import application_orchestrator
@@ -44,7 +45,7 @@ security = HTTPBasic()
 ## For document
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, "user")
-    correct_password = secrets.compare_digest(
+    correct_password = authenticate(
         credentials.password, access_secret_version("originations-api-key")
     )
     if not (correct_username and correct_password):
