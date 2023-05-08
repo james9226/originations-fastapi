@@ -18,7 +18,8 @@ def type_lookup(avro_name: str, avro_type: str):
     time_fields = ["time", "date"]
 
     if isinstance(avro_type, list):
-        return type_lookup(avro_name, avro_type[-1])
+        type = type_lookup(avro_name, avro_type[-1])
+        return type
 
     if any(x in avro_name.lower() for x in time_fields):
         return "TIMESTAMP"
