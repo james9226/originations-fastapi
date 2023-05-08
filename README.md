@@ -18,12 +18,12 @@ Environment variables are stored in the CD script, injected into the container a
     - [IAM Configuration](#iam-configuration)
   - [TODO](#todo)
 
-
 ## Project Structure
 
     .
     ├── pyproject.toml             # App Dependancies
     ├── /tests                     # Test files (alternatively `spec` or `tests`)
+    ├── /.github/workflows         # CI/CD pipeline configuration
     │
     ├── /originations              # The Originations App!
     │   ├── main.py                # FastAPI application entrypoint
