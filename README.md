@@ -11,7 +11,7 @@ Environment variables are stored in the CD script, injected into the container a
 
 ## Infrastructure
 
-![Infra Diagram](https://github.com/james9226/originations-fastapi/blob/main/Infrastructure.drawio.png?raw=true)
+![Infra Diagram](https://github.com/james9226/originations-fastapi/blob/main/docs/Infrastructure.drawio.png?raw=true)
 
 The Infrastructure used is as follows:
 
@@ -42,7 +42,6 @@ Run `gcloud auth application-default login` to authenticate with google cloud
 
 Run `poetry run uvicorn originations.main:app --reload` to run the API locally in development mode (not dockerised)
 
-
 ## Project Configuration
 
 ### Secrets
@@ -63,6 +62,7 @@ Run `poetry run uvicorn originations.main:app --reload` to run the API locally i
   - It also needs to be registered as a permitted user of the service account for cloud run!
   
 ## TODO
+
 - Migrate production from Cloud Firestore to Cloud SQL (or other SQL DB)
 - Fully configure production DB, IAM, Secrets and Cloud Run in Terraform
 - Enable CodeQL for ongoing vulenerability scanning of main branch
