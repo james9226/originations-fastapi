@@ -9,6 +9,11 @@ This is a FastAPI project, containerized with docker and hosted on GCP cloud run
 It uses GitHub actions for a simple CI/CD flow and google secrets manager for secrets management.
 Environment variables are stored in the CD script, injected into the container at deploy time with the cloud run deploy command and are managed at runtime with the Pydantic Settings class.
 
+## Infrastructure
+
+![Infra Diagram](https://github.com/james9226/originations-fastapi/blob/main/Infrastructure.drawio.png?raw=true)
+
+
 ## Run Locally
 
 You should have poetry and python already installed on your machine!
