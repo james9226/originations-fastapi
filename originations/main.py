@@ -42,7 +42,7 @@ app.add_middleware(RequestContextMiddleware)
 security = HTTPBasic()
 
 
-## For document
+## To authenticate
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, "user")
     correct_password = authenticate(
