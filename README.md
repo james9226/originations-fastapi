@@ -9,6 +9,16 @@ This is a FastAPI project, containerized with docker and hosted on GCP cloud run
 It uses GitHub actions for a simple CI/CD flow and google secrets manager for secrets management.
 Environment variables are stored in the CD script, injected into the container at deploy time with the cloud run deploy command and are managed at runtime with the Pydantic Settings class.
 
+- [Originations FastAPI Demo Project](#originations-fastapi-demo-project)
+  - [Project Structure](#project-structure)
+  - [Infrastructure](#infrastructure)
+  - [Run Locally](#run-locally)
+  - [Project Configuration](#project-configuration)
+    - [Secrets](#secrets)
+    - [IAM Configuration](#iam-configuration)
+  - [TODO](#todo)
+
+
 ## Project Structure
 
     .
