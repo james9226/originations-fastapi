@@ -7,7 +7,7 @@ from originations.services.logging import log_handler
 from typing import Any, Optional
 
 
-def nullable(type: str, value: Optional[Any] = None) -> str:
+def nullable(type: str, value: Optional[Any] = None) -> Optional[dict]:
     if not value:
         return value
     else:
