@@ -4,6 +4,8 @@
 ) ![CD](https://github.com/james9226/originations-fastapi/actions/workflows/cd.yaml/badge.svg
 )
 
+An application for automated credit decisioning!
+
 This is a FastAPI project, containerized with docker and hosted on GCP cloud run.
 
 It uses GitHub actions for a simple CI/CD flow and google secrets manager for secrets management.
