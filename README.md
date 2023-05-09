@@ -11,6 +11,11 @@ Environment variables are stored in the CD script, injected into the container a
 
 - [Originations FastAPI Demo Project](#originations-fastapi-demo-project)
   - [Project Structure](#project-structure)
+  - [Endpoints](#endpoints)
+  - [Application Architecture](#application-architecture)
+    - [Usage of Async](#usage-of-async)
+    - [Triggers State Store](#triggers-state-store)
+    - [Bureau Service](#bureau-service)
   - [Infrastructure](#infrastructure)
   - [Run Locally](#run-locally)
   - [Project Configuration](#project-configuration)
@@ -41,6 +46,35 @@ Environment variables are stored in the CD script, injected into the container a
     │
     └── /docs                      # Documentation for the project
 
+## Endpoints
+
+- /docs/ - Swagger documentation
+- /v1/application/ - Application (Quotation) Endpoint (under construction)
+- /v1/submission/ - Submission (Hard Search) Endpoint (tbd)
+
+## Application Architecture
+
+![Application Diagram](https://github.com/james9226/originations-fastapi/blob/main/docs/quotation.drawio.png?raw=true)
+
+### Usage of Async 
+
+We use simulatenous async writes where possible, e.g. in the prevetting stage we:
+- Log applicant PII to production DB
+- Log the application request to pub/sub
+- Run prevetting policy
+Asnchronously at the same time!
+
+This allows the API to be very fast (700ms response for someone declined at prevetting, 1.2-2.2 seconds for a quotation)
+
+### Triggers State Store
+
+While we publish the results of all our policy rules to pub/sub for ingestion to BigQuery, we also maintain one document per applicant hash (a unique ID for each combination of PII) that contains a map of all policy rules the applicant has ever triggered and when the rule was most recently triggered. This minimizes the amount of data we need to write to a DB (slower than publishing to a topic) and enables very efficient DB reads, as there is only one document that ever needs to be grabbed, which can be fetched by its exact document ID (the hash) and which contains the relevant data for deciding whether to decline the application due to recent declines. This minimizes the need to pull fresh files if they were recently declined, saving bureau costs.
+
+### Bureau Service
+
+We also cache credit files and use the bureau service to handle this. It will first check the DB for the credit file (again according to the exact document reference) and, iff it does not find one, it will then fetch a new file from a (mocked) bureau endpoint and write it to the DB for future usage.
+
+TODO: Refactor this implementation
 
 ## Infrastructure
 
