@@ -52,7 +52,7 @@ Environment variables are stored in the CD script, injected into the container a
 
 - /docs/ - Swagger documentation
 - /v1/application/ - Application (Quotation) Endpoint (under construction)
-- /v1/submission/ - Submission (Hard Search) Endpoint (tbd)
+- /v1/submission/ - Submission (Hard Search) Endpoint (todo!)
 
 ## Application Architecture
 
