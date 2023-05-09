@@ -59,11 +59,12 @@ Environment variables are stored in the CD script, injected into the container a
 ### Usage of Async 
 
 We use simulatenous async writes where possible, e.g. in the prevetting stage we:
+
 - Log applicant PII to production DB
 - Log the application request to pub/sub
 - Run prevetting policy
-Asnchronously at the same time!
 
+Asnchronously at the same time!
 This allows the API to be very fast (700ms response for someone declined at prevetting, 1.2-2.2 seconds for a quotation)
 
 ### Triggers State Store
@@ -72,9 +73,7 @@ While we publish the results of all our policy rules to pub/sub for ingestion to
 
 ### Bureau Service
 
-We also cache credit files and use the bureau service to handle this. It will first check the DB for the credit file (again according to the exact document reference) and, iff it does not find one, it will then fetch a new file from a (mocked) bureau endpoint and write it to the DB for future usage.
-
-TODO: Refactor this implementation
+We also cache credit files and use the bureau service to handle this. It will first check the DB for the credit file (again according to the exact document reference) and, iff it does not find one, it will then fetch a new file from a (mocked) bureau endpoint and write it to the DB for future usage. This currently needs some refactoring.
 
 ## Infrastructure
 
@@ -130,9 +129,14 @@ Run `poetry run uvicorn originations.main:app --reload` to run the API locally i
   
 ## TODO
 
-- Migrate production from Cloud Firestore to Cloud SQL (or other SQL DB)
+- Migrate to OUATH for endpoint authentication
 - Fully configure production DB, IAM, Secrets and Cloud Run in Terraform
 - Enable CodeQL for ongoing vulenerability scanning of main branch
 - Finish the main application!!
+- Enable multiquote, so we can offer the applicant a variety of loan amounts and terms rather than just one.
+- Finish the affordability module.
+- Add the testing suite.
+- Refactor bureau service so that it is a state store of the latest credit file (with historical files available elsewhere)!
 - Build a frontend!
+- Potentially refactor the main control flow to an OOP approach. Currently a slightly strange function/procedural hybrid.
 - Fix MyPy so the project is fully type-safe (currently disabled)
