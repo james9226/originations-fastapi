@@ -54,7 +54,7 @@ Environment variables are stored in the CD script, injected into the container a
 
 ## Application Architecture
 
-![Application Diagram](https://github.com/james9226/originations-fastapi/blob/main/docs/quotation.drawio.png?raw=true)
+![Application Diagram](https://github.com/james9226/originations-fastapi/blob/main/docs/quotation.png?raw=true)
 
 ### Usage of Async 
 
