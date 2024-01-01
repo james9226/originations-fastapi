@@ -59,6 +59,10 @@ async def application_orchestrator(raw_request: ApplicationRequestInput):
     """
     hash = hash_application(raw_request)
 
+    application_id, event_time = get_request_id(), get_request_datetime()
+    if not application_id or not event_time:
+        raise RuntimeError()
+
     request = ApplicationRequest(
         application_id=get_request_id(),  # type: ignore[arg-type]
         event_time=get_request_datetime(),  # type: ignore

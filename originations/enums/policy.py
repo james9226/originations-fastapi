@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class PolicyRuleResult(str, Enum):
+class PolicyRuleResultType(str, Enum):
     TRIGGERED = "triggered"
     NOT_TRIGGERED = "not_triggered"
     ERRORED = "errored"
@@ -21,3 +21,12 @@ class PolicyPhase(str, Enum):
     APPLICATION = "application"
     QUOTATION = "quotation"
     SUBMISSION = "submission"
+
+
+class ReferralType(str, Enum):
+    PROOF_OF_INCOME = "proof_of_income"
+    PROOF_OF_IDENTITY = "proof_of_identity"
+    PROOF_OF_SELF = "proof_of_self"
+    PROOF_OF_ADDRESS = "proof_of_address"
+    PROOF_OF_BANK_ACCOUNT = "proof_of_bank_account"
+    FRAUD_CHECK = "fraud_check"

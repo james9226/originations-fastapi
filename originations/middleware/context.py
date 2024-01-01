@@ -1,12 +1,25 @@
 from contextvars import ContextVar
+from logging import LoggerAdapter, getLogger
 from typing import Optional
 from uuid import uuid4, UUID
 from datetime import datetime
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
-import logging
 
-logger = logging.getLogger("api-logger")
+
+BASE_LOGGER = getLogger("api-logger")
+
+
+class SetLoggingAdapter(LoggerAdapter):
+    def __init__(self, logger, request_id: UUID):
+        super().__init__(logger, {})
+        self.request_id = request_id
+
+    def process(self, msg, kwargs):
+        kwargs["extra"] = {"request_id": self.request_id}
+        return msg, kwargs
+
+
 REQUEST_ID_CTX_KEY = "request_id"
 REQUEST_DATETIME_CTX_KEY = "request_datetime"
 
@@ -34,9 +47,9 @@ class RequestContextMiddleware(BaseHTTPMiddleware):
 
         request_datetime = _request_datetime_ctx_key.set(datetime.now())
 
-        logger.info(
-            f"request_id={get_request_id()} start request path={request.url.path}"
-        )
+        logger = SetLoggingAdapter(BASE_LOGGER, get_request_id())
+
+        logger.info(f"start request path={request.url.path}")
 
         response = await call_next(request)
 
@@ -45,7 +58,7 @@ class RequestContextMiddleware(BaseHTTPMiddleware):
         # formatted_process_time = "{0:.2f}".format(str(process_time))
 
         logger.info(
-            f"request_id={get_request_id()} completed_in={process_time.total_seconds()}ms status_code={response.status_code}"
+            f"completed_in={process_time.total_seconds()}ms status_code={response.status_code}"
         )
 
         _request_id_ctx_key.reset(request_id)

@@ -4,7 +4,7 @@ log_config = {
     "formatters": {
         "default": {
             "()": "uvicorn.logging.DefaultFormatter",
-            "fmt": "%(levelprefix)s %(asctime)s %(message)s",
+            "fmt": "%(levelprefix)s %(asctime)s request_id=%(request_id)s %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
@@ -19,3 +19,26 @@ log_config = {
         "api-logger": {"handlers": ["default"], "level": "DEBUG"},
     },
 }
+
+
+# log_config = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "default": {
+#             "()": "uvicorn.logging.DefaultFormatter",
+#             "fmt": "%(levelprefix)s %(asctime)s %(message)s",
+#             "datefmt": "%Y-%m-%d %H:%M:%S",
+#         },
+#     },
+#     "handlers": {
+#         "default": {
+#             "formatter": "default",
+#             "class": "logging.StreamHandler",
+#             "stream": "ext://sys.stderr",
+#         },
+#     },
+#     "loggers": {
+#         "api-logger": {"handlers": ["default"], "level": "DEBUG"},
+#     },
+# }

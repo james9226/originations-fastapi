@@ -12,6 +12,7 @@ def application_result(
     Note that this function should NOT be used for submissions - a seperate endpoint is necessary.
 
     """
+
     if outcome in [
         PolicyOutcome.DECLINED,
         PolicyOutcome.DECLINED_DUE_TO_TECHNCAL_ERROR,

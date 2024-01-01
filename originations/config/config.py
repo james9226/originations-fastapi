@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     client_x509_cert_url: str
     firebase_private_key_id: str
     firebase_client_email: str
+    password: str
 
     class Config:
         env_file = ".env"

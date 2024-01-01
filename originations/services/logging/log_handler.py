@@ -1,29 +1,17 @@
-import logging
+from logging import getLogger, LoggerAdapter
+from uuid import UUID
+
 from originations.middleware.context import get_request_id
 
-
-logger = logging.getLogger("api-logger")
-
-
-def build_log_message(message: str) -> str:
-    request_id = get_request_id()
-
-    log_message = f"request_id={request_id} " + message
-
-    return log_message
+logger = getLogger("loans-originations")
 
 
-def info(message) -> None:
-    logger.info(build_log_message(message))
+class CustomLoggerAdapter(LoggerAdapter):
+    def process(self, msg, kwargs):
+        # Add request_id to the log record
+        kwargs["extra"] = {"request_id": get_request_id()}
+        return msg, kwargs
 
 
-def warn(message) -> None:
-    logger.warn(build_log_message(message))
-
-
-def error(message) -> None:
-    logger.error(build_log_message(message))
-
-
-def critical(message) -> None:
-    logger.critical(build_log_message(message))
+def get_logger():
+    return CustomLoggerAdapter(logger, {})

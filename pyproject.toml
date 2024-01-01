@@ -18,6 +18,10 @@ google-cloud-secret-manager = "^2.16.1"
 google-cloud-pubsub = "^2.16.1"
 python-dotenv = "^1.0.0"
 bcrypt = "^4.0.1"
+asyncpg = "^0.28.0"
+cloud-sql-python-connector = "^1.4.1"
+sqlmodel = "^0.0.8"
+greenlet = "^2.0.2"
 
 [tools.poetry.group.dev]
 optional=true

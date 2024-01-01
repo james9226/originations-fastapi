@@ -29,18 +29,24 @@ class AddressInput(BaseModel):
 
 class ApplicationRequestInput(BaseModel):
     first_name: str
+    middle_name: str
     last_name: str
     email: EmailStr
     phone_number: str
     date_of_birth: date
+    nationality: str
     address_history: list[AddressInput]
 
     gross_annual_income: StrictInt
     monthly_housing_costs: StrictInt
+    number_of_dependants: StrictInt
+
     residential_status: ResidentialStatus
     marital_status: MaritalStatus
     employment_status: EmploymentStatus
+    job_title: str
     employer_name: str
+    employer_sector: str
 
     loan_amount: StrictInt
     loan_term_in_months: StrictInt
